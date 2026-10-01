@@ -86,18 +86,28 @@ required></textarea>
 <td>{{ solicitacao.data }}</td>
 <td>{{ solicitacao.status }}</td>
 <td>
+  .status.pendente {
+background-color: #fff3cd;
+color: #765b00;
+}
+.status.concluido {
+background-color: #d1fae5;
+color: #065f46;
+}
 {% if solicitacao.status != "Concluído" %}
 <a href="/concluir/{{ solicitacao.id }}">Concluir</a>
-{% else %}Concluído{% endif %}
-</td>
+{% else %}
+Finalizada
+{% endif %}
+  </td>
 </tr>
 {% endfor %}
-</tbody>
+  </tbody>
 </table>
 {% else %}
 <p>Nenhuma solicitação cadastrada.</p>
 {% endif %}
-</section>
+  </section>
 </main>
 </body>
 </html>
