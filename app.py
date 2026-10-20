@@ -16,16 +16,18 @@ CAMPOS = [
     "equipamento",
     "descricao",
     "data",
-    "status",
+    "status"
 ]
 
 
 def carregar_solicitacoes():
     solicitacoes = []
+
     if os.path.exists(ARQUIVO):
         with open(ARQUIVO, "r", newline="", encoding="utf-8") as arquivo:
             leitor = csv.DictReader(arquivo)
             solicitacoes.extend(leitor)
+
     return solicitacoes
 
 
@@ -38,11 +40,13 @@ def salvar_solicitacoes(solicitacoes):
 
 def gerar_novo_id(solicitacoes):
     ids = []
+
     for solicitacao in solicitacoes:
         try:
             ids.append(int(solicitacao["id"]))
         except (ValueError, KeyError):
             pass
+
     return str(max(ids, default=0) + 1)
 
 
@@ -64,10 +68,16 @@ def cadastrar():
         "equipamento": request.form.get("equipamento", "").strip(),
         "descricao": request.form.get("descricao", "").strip(),
         "data": datetime.now().strftime("%d/%m/%Y %H:%M"),
-        "status": "Pendente",
+        "status": "Pendente"
     }
 
-    campos_obrigatorios = ["nome", "tipo_usuario", "sala", "equipamento", "descricao"]
+    campos_obrigatorios = [
+        "nome",
+        "tipo_usuario",
+        "sala",
+        "equipamento",
+        "descricao"
+    ]
 
     if all(nova_solicitacao[campo] for campo in campos_obrigatorios):
         solicitacoes.append(nova_solicitacao)
@@ -79,10 +89,12 @@ def cadastrar():
 @app.route("/concluir/<id_solicitacao>")
 def concluir(id_solicitacao):
     solicitacoes = carregar_solicitacoes()
+
     for solicitacao in solicitacoes:
         if solicitacao.get("id") == id_solicitacao:
             solicitacao["status"] = "Concluído"
             break
+
     salvar_solicitacoes(solicitacoes)
     return redirect("/")
 
